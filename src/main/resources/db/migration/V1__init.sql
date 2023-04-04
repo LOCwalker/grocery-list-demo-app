@@ -1,0 +1,4 @@
+CREATE TABLE grocery_lists (
+    id INTEGER AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(50) NOT NULL
+);

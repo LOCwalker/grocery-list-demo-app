@@ -1,0 +1,15 @@
+spring.application.name: "grocery-list"
+
+server:
+  port: 8080
+  error.whitelabel.enabled: false
+
+spring.datasource:
+  username: root
+  password: just_a_dev_pw
+  url: jdbc:mysql://localhost:3306/grocery-list?createDatabaseIfNotExist=true
+
+springdoc:
+  api-docs:
+    path: /api-docs
+  show-actuator: true
