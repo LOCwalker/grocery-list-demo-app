@@ -9,6 +9,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -36,7 +37,7 @@ public class GroceryListController {
         final GroceryListEntity listEntity = groceryListService.getList(listId);
         final List<ItemDTO> items = listEntity.getMealIngredients()
                 .stream()
-                .map(ingredient -> new ItemDTO(ingredient.getName(), List.of(ingredient.getMeasure())))
+                .map(ingredient -> new ItemDTO(ingredient.getName(), List.of(ingredient.getMeasure()), ingredient.isBought()))
                 .toList();
         return new GroceryListDTO(
                 listEntity.getId(),
@@ -48,5 +49,13 @@ public class GroceryListController {
     @PostMapping("/lists/{listId}/meals")
     public void addMeal(@PathVariable("listId") Long listId, @RequestBody @Validated MealNameDTO mealNameDTO) {
         groceryListService.addMealToList(listId, mealNameDTO.getMealName());
+    }
+
+    @PutMapping("/lists/{listId}/ingredients/{ingredientName}/bought")
+    public void toggleBought(
+            @PathVariable("listId") Long listId,
+            @PathVariable("ingredientName") String ingredientName,
+            @RequestBody @Validated IngredientStateDTO stateDTO) {
+        groceryListService.toggleBought(listId, ingredientName, stateDTO.getBought());
     }
 }

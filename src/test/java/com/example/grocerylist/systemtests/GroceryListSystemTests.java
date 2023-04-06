@@ -3,6 +3,7 @@ package com.example.grocerylist.systemtests;
 import com.example.grocerylist.web.CreateListDTO;
 import com.example.grocerylist.web.GroceryListDTO;
 import com.example.grocerylist.web.IdDTO;
+import com.example.grocerylist.web.IngredientStateDTO;
 import com.example.grocerylist.web.ItemDTO;
 import com.example.grocerylist.web.MealNameDTO;
 import com.github.tomakehurst.wiremock.client.WireMock;
@@ -61,7 +62,19 @@ class GroceryListSystemTests {
         final List<ItemDTO> items = retrievalResponse.getBody().getItems();
         assertThat(items).hasSize(8);
         assertThat(items.get(0).getName()).isEqualTo("penne rigate");
+        assertThat(items.get(0).isBought()).isFalse();
         assertThat(items.get(0).getAmounts()).containsExactly("1 pound");
+
+        rest.put(
+                "/lists/{listId}/ingredients/{ingredientName}/bought",
+                new IngredientStateDTO(true),
+                receivedId,
+                "penne rigate"
+        );
+
+        final ResponseEntity<GroceryListDTO> retrievalResponseAfterToggle = rest.getForEntity("/lists/{listId}", GroceryListDTO.class, receivedId);
+        assertThat(retrievalResponseAfterToggle.getBody().getItems().get(0).isBought()).isTrue();
+        assertThat(retrievalResponseAfterToggle.getBody().getItems().get(1).isBought()).isFalse();
     }
 
 }

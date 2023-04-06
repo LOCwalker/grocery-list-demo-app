@@ -19,6 +19,8 @@ public class IngredientEntity {
     private String name;
     @Column(name = "measure")
     private String measure;
+    @Column(name = "bought")
+    private boolean bought;
 
     public IngredientEntity(String name, String measure) {
         this.name = name;
@@ -38,5 +40,13 @@ public class IngredientEntity {
 
     public String getMeasure() {
         return measure;
+    }
+
+    public boolean isBought() {
+        return bought;
+    }
+
+    public void setBought(boolean bought) {
+        this.bought = bought;
     }
 }

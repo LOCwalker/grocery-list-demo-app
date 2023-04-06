@@ -16,6 +16,7 @@ CREATE TABLE ingredients (
    meals_key INTEGER,
    name VARCHAR(500) NOT NULL,
    measure VARCHAR(100) NOT NULL,
+   bought BOOLEAN NOT NULL,
    INDEX meals_key_idx (meals_key),
    FOREIGN KEY (meals_key) REFERENCES meals(id)
 );

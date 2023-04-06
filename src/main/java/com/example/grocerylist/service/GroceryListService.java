@@ -52,4 +52,14 @@ public class GroceryListService {
         groceryListRepository.save(groceryListEntity);
     }
 
+    public void toggleBought(long listId, String ingredientName, boolean bought) {
+        final GroceryListEntity groceryListEntity = groceryListRepository.findById(listId).orElseThrow(RuntimeException::new);
+
+        groceryListEntity.getMealIngredients()
+                .stream()
+                .filter(ingredient -> ingredient.getName().equals(ingredientName))
+                .forEach(ingredient -> ingredient.setBought(bought));
+
+        groceryListRepository.save(groceryListEntity);
+    }
 }
