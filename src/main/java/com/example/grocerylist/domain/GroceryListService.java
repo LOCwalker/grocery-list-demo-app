@@ -4,9 +4,7 @@ import com.example.grocerylist.infra.MealDbClient;
 import com.example.grocerylist.infra.MealListDTO;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class GroceryListService {
@@ -28,12 +26,15 @@ public class GroceryListService {
 
     public GroceryListEntity getList(long id) {
         return groceryListRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No grocery list with this id exists"));
+                .orElseThrow(GroceryListNotFoundException::new);
     }
 
     public void addMealToList(long listId, String mealName) {
-        final GroceryListEntity groceryListEntity = groceryListRepository.findById(listId).orElseThrow(RuntimeException::new);
+        final GroceryListEntity groceryListEntity = groceryListRepository.findById(listId).orElseThrow(GroceryListNotFoundException::new);
         final MealListDTO meal = mealDbClient.findMeal(mealName);
+        if (meal.getMeals() == null || meal.getMeals().isEmpty()) {
+            throw new NoSuchMealException();
+        }
         final JsonNode firstMeal = meal.getMeals().get(0);
         final MealEntity mealEntity = groceryListEntity.addMeal(firstMeal.get("strMeal").asText());
 
@@ -52,7 +53,7 @@ public class GroceryListService {
     }
 
     public void toggleBought(long listId, String ingredientName, boolean bought) {
-        final GroceryListEntity groceryListEntity = groceryListRepository.findById(listId).orElseThrow(RuntimeException::new);
+        final GroceryListEntity groceryListEntity = groceryListRepository.findById(listId).orElseThrow(GroceryListNotFoundException::new);
 
         groceryListEntity.getMealIngredients()
                 .stream()
