@@ -6,6 +6,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Service
 public class GroceryListService {
 
@@ -18,18 +20,18 @@ public class GroceryListService {
         this.mealDbClient = mealDbClient;
     }
 
-    public long createList(String name) {
+    public UUID createList(String name) {
         final GroceryListEntity groceryListEntity = new GroceryListEntity(null, name);
         groceryListRepository.save(groceryListEntity);
         return groceryListEntity.getId();
     }
 
-    public GroceryListEntity getList(long id) {
+    public GroceryListEntity getList(UUID id) {
         return groceryListRepository.findById(id)
                 .orElseThrow(GroceryListNotFoundException::new);
     }
 
-    public void addMealToList(long listId, String mealName) {
+    public void addMealToList(UUID listId, String mealName) {
         final GroceryListEntity groceryListEntity = groceryListRepository.findById(listId).orElseThrow(GroceryListNotFoundException::new);
         final MealListDTO meal = mealDbClient.findMeal(mealName);
         if (meal.getMeals() == null || meal.getMeals().isEmpty()) {
@@ -52,7 +54,7 @@ public class GroceryListService {
         groceryListRepository.save(groceryListEntity);
     }
 
-    public void toggleBought(long listId, String ingredientName, boolean bought) {
+    public void toggleBought(UUID listId, String ingredientName, boolean bought) {
         final GroceryListEntity groceryListEntity = groceryListRepository.findById(listId).orElseThrow(GroceryListNotFoundException::new);
 
         groceryListEntity.getMealIngredients()

@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 
@@ -38,12 +39,12 @@ public class GroceryListController {
 
     @PostMapping("/lists")
     public ResponseEntity<IdDTO> createList(@RequestBody @Validated CreateListDTO dto) {
-        final long id = groceryListService.createList(dto.getName());
+        final UUID id = groceryListService.createList(dto.getName());
         return ResponseEntity.status(HttpStatus.CREATED).body(new IdDTO(id));
     }
 
     @GetMapping("/lists/{listId}")
-    public GroceryListDTO getList(@PathVariable("listId") Long listId) {
+    public GroceryListDTO getList(@PathVariable("listId") UUID listId) {
         final GroceryListEntity listEntity = groceryListService.getList(listId);
         // given a list of ingredients where the same ingredient can occur multiple times, we want to group these entries
         // input: [{name: "rice", measure: "1 cup"}, {name: "rice", measure: "1/2 pack"}]
@@ -69,13 +70,13 @@ public class GroceryListController {
     }
 
     @PostMapping("/lists/{listId}/meals")
-    public void addMeal(@PathVariable("listId") Long listId, @RequestBody @Validated MealNameDTO mealNameDTO) {
+    public void addMeal(@PathVariable("listId") UUID listId, @RequestBody @Validated MealNameDTO mealNameDTO) {
         groceryListService.addMealToList(listId, mealNameDTO.getMealName());
     }
 
     @PutMapping("/lists/{listId}/ingredients/{ingredientName}/bought")
     public void toggleBought(
-            @PathVariable("listId") Long listId,
+            @PathVariable("listId") UUID listId,
             @PathVariable("ingredientName") String ingredientName,
             @RequestBody @Validated IngredientStateDTO stateDTO) {
         groceryListService.toggleBought(listId, ingredientName, stateDTO.getBought());

@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
+import java.util.UUID;
+
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles(value = "test")
 @WireMockTest(httpPort = 8665)
@@ -22,14 +24,14 @@ class GroceryListSystemTests {
 
     @Test
     void createList() {
-        final long listId = dsl.createList("nombre");
+        final UUID listId = dsl.createList("nombre");
         dsl.assertListHasName(listId, "nombre");
     }
 
     @Test
     void addMealToList() {
         mealDbFaker.fakeArrabiata();
-        final long listId = dsl.createList("ignored");
+        final UUID listId = dsl.createList("ignored");
 
         dsl.addMeal(listId, "Arrabiata");
         dsl.assertListHasIngredient(listId, 8, 6, "penne rigate", "1 pound");
@@ -39,7 +41,7 @@ class GroceryListSystemTests {
     @Test
     void toggleIngredientState() {
         mealDbFaker.fakeArrabiata();
-        final long listId = dsl.createList("ignored");
+        final UUID listId = dsl.createList("ignored");
         dsl.addMeal(listId, "Arrabiata");
 
         dsl.assertBoughStates(listId, false, false);

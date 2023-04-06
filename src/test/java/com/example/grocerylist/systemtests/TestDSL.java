@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -26,26 +27,26 @@ public class TestDSL {
         this.rest = rest;
     }
 
-    public long createList(String name) {
+    public UUID createList(String name) {
         final ResponseEntity<IdDTO> response = rest.postForEntity("/lists", new CreateListDTO(name), IdDTO.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
-        long receivedId = response.getBody().getId();
-        assertThat(receivedId).isGreaterThan(0);
+        UUID receivedId = response.getBody().getId();
+        assertThat(receivedId).isNotNull();
         return receivedId;
     }
 
-    public void assertListHasName(long groceryListId, String name) {
+    public void assertListHasName(UUID groceryListId, String name) {
         final ResponseEntity<GroceryListDTO> response = rest.getForEntity("/lists/{listId}", GroceryListDTO.class, groceryListId);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(response.getBody().getName()).isEqualTo(name);
     }
 
-    public void addMeal(long groceryListId, String mealName) {
+    public void addMeal(UUID groceryListId, String mealName) {
         final ResponseEntity<Void> response = rest.postForEntity("/lists/{listId}/meals", new MealNameDTO(mealName), Void.class, groceryListId);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
     }
 
-    public void assertListHasIngredient(long groceryListId, int itemCount, int itemIdx, String itemName, String itemAmount) {
+    public void assertListHasIngredient(UUID groceryListId, int itemCount, int itemIdx, String itemName, String itemAmount) {
         final ResponseEntity<GroceryListDTO> response = rest.getForEntity("/lists/{listId}", GroceryListDTO.class, groceryListId);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         final List<ItemDTO> items = response.getBody().getItems();
@@ -55,7 +56,7 @@ public class TestDSL {
         assertThat(items.get(itemIdx).getAmounts()).containsExactly(itemAmount);
     }
 
-    public void toggleIngredientBought(long groceryListId, String ingredientName, boolean bought) {
+    public void toggleIngredientBought(UUID groceryListId, String ingredientName, boolean bought) {
         rest.put(
                 "/lists/{listId}/ingredients/{ingredientName}/bought",
                 new IngredientStateDTO(bought),
@@ -64,7 +65,7 @@ public class TestDSL {
         );
     }
 
-    public void assertBoughStates(long groceryListId, boolean... firstNStates) {
+    public void assertBoughStates(UUID groceryListId, boolean... firstNStates) {
         final ResponseEntity<GroceryListDTO> response = rest.getForEntity("/lists/{listId}", GroceryListDTO.class, groceryListId);
         final List<ItemDTO> items = response.getBody().getItems();
 

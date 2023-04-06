@@ -1,11 +1,11 @@
 CREATE TABLE grocery_lists (
-    id INTEGER AUTO_INCREMENT PRIMARY KEY,
+    id BINARY(16) PRIMARY KEY,
     name VARCHAR(50) NOT NULL
 );
 
 CREATE TABLE meals (
    id INTEGER AUTO_INCREMENT PRIMARY KEY,
-   grocery_lists_key INTEGER,
+   grocery_lists_key BINARY(16),
    name VARCHAR(500) NOT NULL,
    INDEX grocery_lists_key_idx (grocery_lists_key),
    FOREIGN KEY (grocery_lists_key) REFERENCES grocery_lists(id)

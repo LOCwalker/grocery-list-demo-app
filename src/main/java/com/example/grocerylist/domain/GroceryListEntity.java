@@ -15,6 +15,7 @@ import lombok.NoArgsConstructor;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Table(name = "grocery_lists")
@@ -23,9 +24,9 @@ public class GroceryListEntity {
 
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Getter
-    private Long id;
+    private UUID id;
     @Column(name = "name")
     @Getter
     private String name;
@@ -33,7 +34,7 @@ public class GroceryListEntity {
     @JoinColumn(name = "grocery_lists_key")
     private List<MealEntity> meals = new ArrayList<>();
 
-    public GroceryListEntity(Long id, String name) {
+    public GroceryListEntity(UUID id, String name) {
         this.id = id;
         this.name = name;
     }
