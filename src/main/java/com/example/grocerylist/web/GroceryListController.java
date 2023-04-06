@@ -2,6 +2,7 @@ package com.example.grocerylist.web;
 
 import com.example.grocerylist.domain.GroceryListEntity;
 import com.example.grocerylist.domain.GroceryListService;
+import com.example.grocerylist.domain.IngredientEntity;
 import com.example.grocerylist.web.dtos.CreateListDTO;
 import com.example.grocerylist.web.dtos.GroceryListDTO;
 import com.example.grocerylist.web.dtos.IdDTO;
@@ -19,7 +20,10 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 
 @RestController
@@ -41,9 +45,21 @@ public class GroceryListController {
     @GetMapping("/lists/{listId}")
     public GroceryListDTO getList(@PathVariable("listId") Long listId) {
         final GroceryListEntity listEntity = groceryListService.getList(listId);
-        final List<ItemDTO> items = listEntity.getMealIngredients()
+        // given a list of ingredients where the same ingredient can occur multiple times, we want to group these entries
+        // input: [{name: "rice", measure: "1 cup"}, {name: "rice", measure: "1/2 pack"}]
+        // output: [{"name": "rice", "amounts": ["1 cup", "1/2 pack"]}]
+        final Map<String, List<IngredientEntity>> groupedIngredients = listEntity.getMealIngredients()
                 .stream()
-                .map(ingredient -> new ItemDTO(ingredient.getName(), List.of(ingredient.getMeasure()), ingredient.isBought()))
+                .collect(Collectors.groupingBy(IngredientEntity::getName));
+        final List<ItemDTO> items = groupedIngredients
+                .entrySet()
+                .stream()
+                .map(entry -> new ItemDTO(
+                        entry.getKey(),
+                        entry.getValue().stream().map(IngredientEntity::getMeasure).toList(),
+                        entry.getValue().get(0).isBought())
+                )
+                .sorted(Comparator.comparing(ItemDTO::getName))
                 .toList();
         return new GroceryListDTO(
                 listEntity.getId(),

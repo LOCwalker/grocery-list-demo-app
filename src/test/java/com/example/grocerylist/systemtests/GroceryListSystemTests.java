@@ -32,8 +32,8 @@ class GroceryListSystemTests {
         final long listId = dsl.createList("ignored");
 
         dsl.addMeal(listId, "Arrabiata");
-        dsl.assertListHasIngredient(listId, 8, 0, "penne rigate", "1 pound");
-        dsl.assertListHasIngredient(listId, 8, 6, "basil", "6 leaves");
+        dsl.assertListHasIngredient(listId, 8, 6, "penne rigate", "1 pound");
+        dsl.assertListHasIngredient(listId, 8, 1, "basil", "6 leaves");
     }
 
     @Test
@@ -43,8 +43,8 @@ class GroceryListSystemTests {
         dsl.addMeal(listId, "Arrabiata");
 
         dsl.assertBoughStates(listId, false, false);
-        dsl.toggleIngredientBought(listId, "penne rigate", true);
-        dsl.assertBoughStates(listId, true, false);
+        dsl.toggleIngredientBought(listId, "basil", true);
+        dsl.assertBoughStates(listId, false, true);
     }
 
 }
