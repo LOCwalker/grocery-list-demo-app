@@ -9,6 +9,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -16,13 +18,16 @@ import java.util.List;
 
 @Entity
 @Table(name = "grocery_lists")
+@NoArgsConstructor
 public class GroceryListEntity {
 
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Getter
     private Long id;
     @Column(name = "name")
+    @Getter
     private String name;
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "grocery_lists_key")
@@ -33,22 +38,10 @@ public class GroceryListEntity {
         this.name = name;
     }
 
-    public GroceryListEntity() {
-
-    }
-
     public MealEntity addMeal(String name) {
         final MealEntity meal = new MealEntity(name);
         this.meals.add(meal);
         return meal;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
     }
 
     public List<IngredientEntity> getMealIngredients() {

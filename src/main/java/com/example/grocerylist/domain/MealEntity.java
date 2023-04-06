@@ -10,12 +10,16 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "meals")
+@NoArgsConstructor
+@Getter
 public class MealEntity {
 
     @Id
@@ -32,22 +36,8 @@ public class MealEntity {
         this.name = name;
     }
 
-    public MealEntity() {
-    }
-
     public void addIngredient(String name, String measure) {
         ingredients.add(new IngredientEntity(name, measure));
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public List<IngredientEntity> getIngredients() {
-        return ingredients;
-    }
 }

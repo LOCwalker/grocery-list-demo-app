@@ -8,8 +8,8 @@ import org.springframework.web.client.RestTemplate;
 @Service
 public class MealDbClient {
 
-    private RestTemplate restTemplate;
-    private String mealDbBaseUrl;
+    private final RestTemplate restTemplate;
+    private final String mealDbBaseUrl;
 
     @Autowired
     public MealDbClient(RestTemplate restTemplate, @Value("${meal-db-base-url}") String mealDbBaseUrl) {

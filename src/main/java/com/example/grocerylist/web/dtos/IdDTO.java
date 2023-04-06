@@ -1,17 +1,14 @@
 package com.example.grocerylist.web.dtos;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
 public class IdDTO {
 
     private long id;
 
-    public IdDTO(long id) {
-        this.id = id;
-    }
-
-    public IdDTO() {
-    }
-
-    public long getId() {
-        return id;
-    }
 }

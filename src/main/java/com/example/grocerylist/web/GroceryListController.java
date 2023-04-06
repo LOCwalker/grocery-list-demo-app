@@ -25,7 +25,7 @@ import java.util.List;
 @RestController
 public class GroceryListController {
 
-    private GroceryListService groceryListService;
+    private final GroceryListService groceryListService;
 
     @Autowired
     public GroceryListController(GroceryListService groceryListService) {

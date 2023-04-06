@@ -11,8 +11,8 @@ import org.springframework.web.server.ResponseStatusException;
 @Service
 public class GroceryListService {
 
-    private GroceryListRepository groceryListRepository;
-    private MealDbClient mealDbClient;
+    private final GroceryListRepository groceryListRepository;
+    private final MealDbClient mealDbClient;
 
     @Autowired
     public GroceryListService(GroceryListRepository groceryListRepository, MealDbClient mealDbClient) {
