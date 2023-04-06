@@ -1,8 +1,7 @@
-package com.example.grocerylist.service;
+package com.example.grocerylist.domain;
 
-import com.example.grocerylist.db.GroceryListEntity;
-import com.example.grocerylist.db.GroceryListRepository;
-import com.example.grocerylist.db.MealEntity;
+import com.example.grocerylist.infra.MealDbClient;
+import com.example.grocerylist.infra.MealListDTO;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

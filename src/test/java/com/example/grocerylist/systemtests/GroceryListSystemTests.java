@@ -1,11 +1,11 @@
 package com.example.grocerylist.systemtests;
 
-import com.example.grocerylist.web.CreateListDTO;
-import com.example.grocerylist.web.GroceryListDTO;
-import com.example.grocerylist.web.IdDTO;
-import com.example.grocerylist.web.IngredientStateDTO;
-import com.example.grocerylist.web.ItemDTO;
-import com.example.grocerylist.web.MealNameDTO;
+import com.example.grocerylist.web.dtos.CreateListDTO;
+import com.example.grocerylist.web.dtos.GroceryListDTO;
+import com.example.grocerylist.web.dtos.IdDTO;
+import com.example.grocerylist.web.dtos.IngredientStateDTO;
+import com.example.grocerylist.web.dtos.ItemDTO;
+import com.example.grocerylist.web.dtos.MealNameDTO;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import org.junit.jupiter.api.Test;

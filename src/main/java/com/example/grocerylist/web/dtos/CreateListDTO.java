@@ -1,4 +1,4 @@
-package com.example.grocerylist.web;
+package com.example.grocerylist.web.dtos;
 
 import jakarta.validation.constraints.Size;
 

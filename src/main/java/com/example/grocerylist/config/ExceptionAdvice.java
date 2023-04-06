@@ -1,5 +1,6 @@
-package com.example.grocerylist.infra;
+package com.example.grocerylist.config;
 
+import com.example.grocerylist.web.dtos.ErrorDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;

@@ -1,4 +1,4 @@
-package com.example.grocerylist.infra;
+package com.example.grocerylist.web.dtos;
 
 public class ErrorDTO {
 

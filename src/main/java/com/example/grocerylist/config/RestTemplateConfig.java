@@ -1,4 +1,4 @@
-package com.example.grocerylist.infra;
+package com.example.grocerylist.config;
 
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;

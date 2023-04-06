@@ -1,7 +1,13 @@
 package com.example.grocerylist.web;
 
-import com.example.grocerylist.db.GroceryListEntity;
-import com.example.grocerylist.service.GroceryListService;
+import com.example.grocerylist.domain.GroceryListEntity;
+import com.example.grocerylist.domain.GroceryListService;
+import com.example.grocerylist.web.dtos.CreateListDTO;
+import com.example.grocerylist.web.dtos.GroceryListDTO;
+import com.example.grocerylist.web.dtos.IdDTO;
+import com.example.grocerylist.web.dtos.IngredientStateDTO;
+import com.example.grocerylist.web.dtos.ItemDTO;
+import com.example.grocerylist.web.dtos.MealNameDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

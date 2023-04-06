@@ -1,4 +1,4 @@
-package com.example.grocerylist.service;
+package com.example.grocerylist.infra;
 
 import com.fasterxml.jackson.databind.JsonNode;
 

@@ -1,4 +1,4 @@
-package com.example.grocerylist.service;
+package com.example.grocerylist.infra;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;

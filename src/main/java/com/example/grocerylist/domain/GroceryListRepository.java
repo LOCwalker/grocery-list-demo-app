@@ -1,4 +1,4 @@
-package com.example.grocerylist.db;
+package com.example.grocerylist.domain;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;

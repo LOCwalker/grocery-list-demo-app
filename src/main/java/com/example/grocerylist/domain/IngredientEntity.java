@@ -1,4 +1,4 @@
-package com.example.grocerylist.db;
+package com.example.grocerylist.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
