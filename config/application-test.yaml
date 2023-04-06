@@ -2,3 +2,5 @@ spring.datasource:
   username: root
   password: test
   url: jdbc:tc:mysql:8.0.32:///grocery-list
+
+meal-db-base-url: http://localhost:8665/

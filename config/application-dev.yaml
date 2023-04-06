@@ -13,3 +13,5 @@ springdoc:
   api-docs:
     path: /api-docs
   show-actuator: true
+
+meal-db-base-url: https://www.themealdb.com/api/json/v1

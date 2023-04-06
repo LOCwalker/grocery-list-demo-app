@@ -1,5 +1,6 @@
 package com.example.grocerylist.web;
 
+import com.example.grocerylist.db.GroceryListEntity;
 import com.example.grocerylist.service.GroceryListService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,7 +11,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
+
+import java.util.List;
 
 
 @RestController
@@ -31,8 +33,20 @@ public class GroceryListController {
 
     @GetMapping("/lists/{listId}")
     public GroceryListDTO getList(@PathVariable("listId") Long listId) {
-        return groceryListService.getList(listId)
-                .map(list -> new GroceryListDTO(list.getId(), list.getName()))
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No grocery list with this id exists"));
+        final GroceryListEntity listEntity = groceryListService.getList(listId);
+        final List<ItemDTO> items = listEntity.getMealIngredients()
+                .stream()
+                .map(ingredient -> new ItemDTO(ingredient.getName(), List.of(ingredient.getMeasure())))
+                .toList();
+        return new GroceryListDTO(
+                listEntity.getId(),
+                listEntity.getName(),
+                items
+        );
+    }
+
+    @PostMapping("/lists/{listId}/meals")
+    public void addMeal(@PathVariable("listId") Long listId, @RequestBody @Validated MealNameDTO mealNameDTO) {
+        groceryListService.addMealToList(listId, mealNameDTO.getMealName());
     }
 }
