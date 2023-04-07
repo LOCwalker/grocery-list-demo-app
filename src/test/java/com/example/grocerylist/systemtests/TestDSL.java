@@ -32,6 +32,7 @@ public class TestDSL {
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
         UUID receivedId = response.getBody().getId();
         assertThat(receivedId).isNotNull();
+        assertThat(response.getHeaders().get("Location")).containsExactly("/lists/" + receivedId);
         return receivedId;
     }
 

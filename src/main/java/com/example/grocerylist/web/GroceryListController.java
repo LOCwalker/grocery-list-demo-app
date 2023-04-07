@@ -9,8 +9,8 @@ import com.example.grocerylist.web.dtos.IdDTO;
 import com.example.grocerylist.web.dtos.IngredientStateDTO;
 import com.example.grocerylist.web.dtos.ItemDTO;
 import com.example.grocerylist.web.dtos.MealNameDTO;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -37,12 +39,14 @@ public class GroceryListController {
         this.groceryListService = groceryListService;
     }
 
+    @Operation(summary = "Creates a new grocery list")
     @PostMapping("/lists")
-    public ResponseEntity<IdDTO> createList(@RequestBody @Validated CreateListDTO dto) {
+    public ResponseEntity<IdDTO> createList(@RequestBody @Validated CreateListDTO dto) throws URISyntaxException {
         final UUID id = groceryListService.createList(dto.getName());
-        return ResponseEntity.status(HttpStatus.CREATED).body(new IdDTO(id));
+        return ResponseEntity.created(new URI("/lists/" + id)).body(new IdDTO(id));
     }
 
+    @Operation(summary = "Retrieves a grocery list")
     @GetMapping("/lists/{listId}")
     public GroceryListDTO getList(@PathVariable("listId") UUID listId) {
         final GroceryListEntity listEntity = groceryListService.getList(listId);
@@ -69,11 +73,13 @@ public class GroceryListController {
         );
     }
 
+    @Operation(summary = "Adds the ingredients of the specified meal to the grocery list")
     @PostMapping("/lists/{listId}/meals")
     public void addMeal(@PathVariable("listId") UUID listId, @RequestBody @Validated MealNameDTO mealNameDTO) {
         groceryListService.addMealToList(listId, mealNameDTO.getMealName());
     }
 
+    @Operation(summary = "Toggles the 'bought' state of an ingredient on the grocery list")
     @PutMapping("/lists/{listId}/ingredients/{ingredientName}/bought")
     public void toggleBought(
             @PathVariable("listId") UUID listId,

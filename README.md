@@ -16,6 +16,14 @@ Then, individual ingredients can be crossed off the list (while going through th
    * using `mvn package`, then `java -jar target/grocery-list-0.0.1-SNAPSHOT.jar --spring.profiles.active=dev`
 3. The application will connect to the container db and use the real public https://www.themealdb.com API endpoint.
 
+## How to Use
+Visit http://localhost:8080/swagger-ui/index.html#/ for an interactive Swagger UI.
+Basic workflow is:
+1. POST `/lists` with `{"name": "my grocery list"}` creates a list and returns its id
+2. POST `/lists/{listId}/meals` with `{"mealName": "arrabiata"}` adds the ingredients of the meal to the list
+3. GET `/lists/{listId}` returns the ingredients on the list
+4. PUT `/lists/{listId}/ingredients/basil/bought` with `{"bought": true}` crosses basil off the list
+
 ## Test Approach
 There is a "system test suite" with a focus on realistic end-to-end testing:
 * The Spring Boot application is started based on a real Tomcat HTTP server, but in profile `test`
@@ -23,5 +31,5 @@ There is a "system test suite" with a focus on realistic end-to-end testing:
 * https://wiremock.org/ is used to spin up a real HTTP server and fake the https://www.themealdb.com endpoints
 
 ## Possible Improvements
-* Parse the "measure" fields into numerical amount and unit in order to sum them sup
+* Parse the "measure" fields into numerical amount and unit in order to sum them up
 * Allow to specify "number of servings" when adding a meal
